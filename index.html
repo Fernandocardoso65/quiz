@@ -229,6 +229,7 @@
     let currentQuestion = null;
     let questionIndex = 0;
     let playerName = '';
+    let shuffledQuestions = [];
 
     // Banco de perguntas (100 perguntas)
     const questionsPool = [
@@ -775,6 +776,8 @@
         return;
       }
       console.log('Iniciando quiz...');
+      shuffledQuestions = shuffleArray([...questionsPool]);
+      console.log('Perguntas embaralhadas:', shuffledQuestions.map(q => q.question));
       document.getElementById('start-section').style.display = 'none';
       document.getElementById('quiz-section').style.display = 'block';
       startTimer();
@@ -803,10 +806,11 @@
     }
 
     function displayQuestion() {
-      if (questionIndex >= questionsPool.length) {
-        questionIndex = 0; // Volta ao início
+      if (questionIndex >= shuffledQuestions.length) {
+        endQuiz();
+        return;
       }
-      currentQuestion = questionsPool[questionIndex];
+      currentQuestion = shuffledQuestions[questionIndex];
       document.getElementById('question').textContent = currentQuestion.question;
       document.getElementById('fact').style.display = 'none';
       document.getElementById('next-btn').style.display = 'none';
